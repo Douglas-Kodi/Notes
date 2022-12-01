@@ -38,6 +38,12 @@ def get_articles():
     results = articles_schema.dump(all_articles)
     return jsonify(results)
 
+
+@app.route('/get/<id>/', methods = ['GET'])
+def post_details(id):
+    article = Articles.query.get(id)
+    return article_schema.jsonify(article)
+
     
 @app.route('/add', methods = ['POST'])
 def add_article():
@@ -48,6 +54,26 @@ def add_article():
     db.session.add(articles)
     db.session.commit()
     return article_schema.jsonify(articles)
+
+
+@app.route('/update/<id>/', methods = ['PUT'])
+def update_article(id):
+    article = Articles.query.get(id)
+    title = request.json['title']
+    body = request.json['body']
+
+    article.title = title
+    article.body = body
+    db.session.commit()
+    return article_schema.jsonify(article)
+
+
+@app.route('/delete/<id>/', methods = ['DELETE'])
+def article_delete(id):
+    article = Articles.query.get(id)
+    db.session.delete(article)
+    db.session.commit()
+    return article_schema.jsonify(article)
 
 
 if __name__ == "__main__":
