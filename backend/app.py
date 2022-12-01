@@ -12,7 +12,7 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 
-class Artitcles(db.Model):
+class Articles(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
     body = db.Column(db.Text())
@@ -28,14 +28,17 @@ class ArticleSchema(ma.Schema):
         fields = ('id', 'title', 'body', 'date')
 
 
-article_schema = ArtitcleSchema()
-articles_schema = ArtitcleSchema(many=True)
+article_schema = ArticleSchema()
+articles_schema = ArticleSchema(many=True)
 
 
 @app.route('/get', methods = ['GET'])
 def get_articles():
-    return jsonify({"Hello":"World"})
+    all_articles = Articles.query.all()
+    results = articles_schema.dump(all_articles)
+    return jsonify(results)
 
+    
 @app.route('/add', methods = ['POST'])
 def add_article():
     title = request.json['title']
