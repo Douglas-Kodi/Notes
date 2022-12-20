@@ -1,2 +1,2 @@
 # Notes
-Notepad in Python/Flask/VueJs
+Notepad in VueJs/Flask/Python
