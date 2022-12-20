@@ -1,16 +1,17 @@
 <template>
     <nav class="navbar navbar-expand-lg bg-light">
         <div class="container">
-            <a class="navbar-brand" href="#">Navbar</a>
+            
+            <router-link class="navbar-brand text-style" to="/"> Flask And Vue3</router-link>
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <li class="nav-item mx-2">
+                        <router-link class="btn btn-primary" aria-current="page" to="/">Home</router-link>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Pricing</a>
+                        <router-link class="btn btn-success" to="/create">Create</router-link>
                     </li>
                 </ul>
             </div>
@@ -25,5 +26,9 @@ export default {
 </script>
 
 <style>
-
+.text-style{
+    font-size: 30px !important;
+    font-family: fantasy !important;
+    color:brown !important;
+}
 </style>
