@@ -1,6 +1,6 @@
 <template>
     <div class="container mt-4">
-        <form @submit.prevent="insertArticle">
+        <form @submit.prevent="updateArticle">
             <input
             type="text"
             class="form-control"
@@ -19,8 +19,8 @@
             <button
             class="btn btn-success mt-4"
             >
-                Publish Article
-            </button>
+                Update Article
+            </button> 
         </form>
         <div v-if="error"
         class="alert alert-warning alert-dismissible fade show mt-5"
@@ -33,6 +33,12 @@
 
 <script>
 export default {
+    props: {
+        id: {
+            type: [Number, String],
+            required:true,
+        }
+    },
     data() {
         return {
             title:null,
@@ -41,12 +47,12 @@ export default {
         }
     },
     methods: {
-        insertArticle() {
+        updateArticle() {
             if(!this.title || !this.body){
                 this.error = "Please add all field"
             } else {
-                fetch('http://localhost:5000/add', {
-                    method:"POST",
+                fetch(`http://localhost:5000/update/${this.id}/`, {
+                    method:"PUT",
                     headers: {
                         "Content-Type":"application/json"
                     },
@@ -62,6 +68,25 @@ export default {
                     console.log(error )
                 })
             }
+        }
+    },
+    beforeRouteEnter(to, from, next) {
+        if(to.params.id != undefined) {
+            fetch(`http://localhost:5000/get/${to.params.id}/`, {
+                method:"GET",
+                headers: {
+                    "Content-Type":"application/json"
+                }
+            })
+            .then(resp => resp.json())
+            .then(data => {
+                return next(vm=>(vm.title=data.title, vm.body=data.body))
+            })
+            .catch(error => {
+                console.log(error )
+            })
+        } else {
+            return next()
         }
     }
 }
